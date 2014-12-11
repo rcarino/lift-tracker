@@ -1,0 +1,21 @@
+<ion-view title="Today's lifts">
+  <ion-content class="padding">
+    <ul ng-repeat="lift in lifts">
+      <li>
+        <h1>{{ lift.type }}</h1>
+        <p>{{ lift.weight }}lbs {{ lift.reps }}x{{ lift.sets }}</p>
+        <p>Plates per side: {{ lift.formattedPlatesPerSide }}</p>
+      </li>
+    </ul>
+    <!--<h1>Squats</h1>-->
+    <!--<p>260lbs 5x3 | 45 45 25 / side</p>-->
+    <!--<h1>Bench Press</h1>-->
+    <!--<p>260lbs 5x3 | 45 45 25 / side</p>-->
+    <!--<h1>Deadlift</h1>-->
+    <!--<p>260lbs 5x3 | 45 45 25 / side</p>-->
+    <a class="button button-block button-energized" href="#/tab/log_set/squats">
+      Begin lifts
+    </a>
+
+  </ion-content>
+</ion-view>
