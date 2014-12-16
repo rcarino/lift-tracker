@@ -61,6 +61,25 @@ angular.module('starter.services', [])
         return {
             getToday: function () {
                 return lifts;
+            },
+
+            getCurrentLift: function () {
+                if (!lifts || lifts.length === 0) {
+                    return null;
+                }
+
+                var currentLift = lifts[0];
+                if (!currentLift.currentSet) {
+                    currentLift.currentSet = 1;
+                } else {
+                    currentLift.currentSet += 1;
+                }
+
+                if (currentLift.currentSet >= currentLift.sets) {
+                    lifts.shift();
+                }
+
+                return currentLift;
             }
         }
     });

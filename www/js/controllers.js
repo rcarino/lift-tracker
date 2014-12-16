@@ -15,12 +15,19 @@ angular.module('starter.controllers', [])
     .controller('AccountCtrl', function ($scope) {
     })
 
-    .controller('LogSetCtrl', function ($scope) {
-
+    .controller('LogSetCtrl', function ($scope, Lifts, $state) {
+        $scope.currentLift = Lifts.getCurrentLift();
+        if (!$scope.currentLift) {
+            $state.go('tab.done');
+        }
     })
 
     .controller('RestCtrl', function ($scope, $state) {
         $scope.$on('timer-stopped', function () {
-            $state.go('tab.log_set', 'Bench');
+            $state.go('tab.log_set');
         });
+    })
+
+    .controller('DoneCtrl', function ($scope) {
+
     });

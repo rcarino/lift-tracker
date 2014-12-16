@@ -48,7 +48,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             })
 
             .state('tab.log_set', {
-                url: '/log_set/:set',
+                url: '/log_set',
                 views: {
                     'tab-todays_lifts': {
                         templateUrl: 'templates/todays_lifts/log_set.html',
@@ -63,6 +63,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     'tab-todays_lifts': {
                         templateUrl: 'templates/todays_lifts/rest.html',
                         controller: 'RestCtrl'
+                    }
+                }
+            })
+
+            .state('tab.done', {
+                url: '/done',
+                views: {
+                    'tab-todays_lifts': {
+                        templateUrl: 'templates/todays_lifts/done.html',
+                        controller: 'DoneCtrl'
                     }
                 }
             })
