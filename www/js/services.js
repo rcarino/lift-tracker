@@ -32,7 +32,15 @@ angular.module('starter.services', [])
                 {type: 'Deadlifts', reps: 5, sets: 1, weight: 300}
             ],
 
-            weights = [45, 35, 25, 10, 5, 2.5, 1.25];
+            weights = [45, 35, 25, 10, 5, 2.5, 1.25],
+
+            squats = {type: 'Squats', reps: 5, sets: 3},
+            benches = {type: 'Bench Presses', reps: 5, sets: 3},
+            deadlifts = {type: 'Deadlifts', reps: 5, sets: 1},
+            overheadPresses = {type: 'Overhead Presses', reps: 5, sets: 3},
+            cleans = {type: 'Power Cleans', reps: 3, sets: 5};
+
+            //workoutA = ;
 
         function getPlatesPerSide(weight) {
             var halfWithoutBar = (weight - 45) / 2,
@@ -64,16 +72,14 @@ angular.module('starter.services', [])
             },
 
             getCurrentLift: function () {
-                if (!lifts || lifts.length === 0) {
+                if (lifts.length === 0) {
                     return null;
                 }
 
-                var currentLift = lifts[0];
-                if (!currentLift.currentSet) {
-                    currentLift.currentSet = 1;
-                } else {
-                    currentLift.currentSet += 1;
-                }
+                var currentLift = lifts[0],
+                    currentSet = currentLift.currentSet;
+
+                currentLift.currentSet = currentSet ? currentSet + 1 : 1
 
                 if (currentLift.currentSet >= currentLift.sets) {
                     lifts.shift();
