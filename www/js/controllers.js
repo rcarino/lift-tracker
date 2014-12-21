@@ -16,11 +16,6 @@ angular.module('starter.controllers', [])
     })
 
     .controller('LogSetCtrl', function ($scope, Lifts, $state) {
-        var currentWorkout = {
-            currentLift: 0,
-            currentSet: 1
-        };
-
         $scope.currentLift = Lifts.getCurrentLift();
         if (!$scope.currentLift) {
             $state.go('tab.done');

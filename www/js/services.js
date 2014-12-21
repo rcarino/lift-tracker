@@ -119,11 +119,8 @@ angular.module('starter.services', [])
                 if (currentWorkout.currentLift >= lifts.length) {
                     return null;
                 }
-
                 var currentLift = lifts[currentWorkout.currentLift];
 
-                console.log('current lift');
-                console.log(currentLift);
                 return currentLift;
             },
 
@@ -134,9 +131,6 @@ angular.module('starter.services', [])
                     currentWorkout.currentLift += 1;
                     currentWorkout.currentSet = 1;
                 }
-
-                console.log('finish current set');
-                console.log(currentWorkout);
             }
         }
     }
