@@ -1,30 +1,5 @@
 angular.module('starter.services', [])
 
-/**
- * A simple example service that returns some data.
- */
-    .factory('Friends', function () {
-        // Might use a resource here that returns a JSON array
-
-        // Some fake testing data
-        var friends = [
-            {id: 0, name: 'Scruff McGruff'},
-            {id: 1, name: 'G.I. Joe'},
-            {id: 2, name: 'Miss Frizzle'},
-            {id: 3, name: 'Ash Ketchum'}
-        ];
-
-        return {
-            all: function () {
-                return friends;
-            },
-            get: function (friendId) {
-                // Simple index lookup
-                return friends[friendId];
-            }
-        }
-    })
-
     .factory('$localstorage', ['$window', function ($window) {
         return {
             set: function (key, value) {
@@ -41,7 +16,7 @@ angular.module('starter.services', [])
                     defaultValue = {};
                 }
                 var value = $window.localStorage[key]
-                return value ? JSON.parse(value) :  defaultValue;
+                return value ? JSON.parse(value) : defaultValue;
             }
         }
     }])
@@ -93,44 +68,55 @@ angular.module('starter.services', [])
             overheadPresses = $localstorage.getObject(OVERHEAD_PRESSES, Lift(OVERHEAD_PRESSES, 5, 3)),
             powerCleans = $localstorage.getObject(POWER_CLEANS, Lift('Power Cleans', 3, 5)),
 
-            workoutA = {
-                workout: 'A',
-                lifts: [squats, benchPresses, deadlifts]
-            },
+            workoutA = [squats, benchPresses, deadlifts],
+            workoutB = [squats, overheadPresses, powerCleans],
 
-            workoutB = {
-                workout: 'B',
-                lifts: [squats, overheadPresses, powerCleans]
-            },
+            currentWorkout = {};
 
-            lifts = workoutA.lifts,
+        function initializeService() {
+            currentWorkout.currentLift = 0;
+            currentWorkout.currentSet = 1;
 
-            currentWorkout = {
-                currentLift: 0,
-                currentSet: 1
-            }
+            var lastWorkout = $localstorage.get('lastWorkout', 'B');
+
+            currentWorkout.type = (lastWorkout === 'B') ? 'A' : 'B';
+            currentWorkout.lifts = (lastWorkout === 'B') ? workoutA : workoutB;
+        }
+
+        initializeService();
 
         return {
             getTodaysWorkout: function () {
-                return lifts;
+                return currentWorkout.lifts;
             },
 
             getCurrentLift: function () {
-                if (currentWorkout.currentLift >= lifts.length) {
+                if (currentWorkout.currentLift >= currentWorkout.lifts.length) {
                     return null;
                 }
-                var currentLift = lifts[currentWorkout.currentLift];
+                var currentLift = currentWorkout.lifts[currentWorkout.currentLift];
 
                 return currentLift;
             },
 
             // Unsafe to call if today's workout has been finished
-            finishCurrentSet: function() {
+            finishCurrentSet: function () {
                 currentWorkout.currentSet += 1;
                 if (currentWorkout.currentSet > this.getCurrentLift().sets) {
                     currentWorkout.currentLift += 1;
                     currentWorkout.currentSet = 1;
                 }
+            },
+
+            finishTodaysWorkout: function () {
+                $localstorage.set('lastWorkout', currentWorkout.type);
+
+                // JSONified objects don't persist their methods must apply manually
+                var setWeightFn = Lift().setWeight;
+                _.forEach(currentWorkout.lifts, function (lift) {
+                    setWeightFn.call(lift, lift.weight + 5);
+                });
+                initializeService();
             }
         }
     }

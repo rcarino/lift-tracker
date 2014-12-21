@@ -3,18 +3,7 @@ angular.module('starter.controllers', [])
     .controller('HomeCtrl', function ($scope, Lifts) {
         $scope.lifts = Lifts.getTodaysWorkout();
     })
-
-    .controller('FriendsCtrl', function ($scope, Friends) {
-        $scope.friends = Friends.all();
-    })
-
-    .controller('FriendDetailCtrl', function ($scope, $stateParams, Friends) {
-        $scope.friend = Friends.get($stateParams.friendId);
-    })
-
-    .controller('AccountCtrl', function ($scope) {
-    })
-
+    
     .controller('LogSetCtrl', function ($scope, Lifts, $state) {
         $scope.currentLift = Lifts.getCurrentLift();
         if (!$scope.currentLift) {
@@ -33,6 +22,6 @@ angular.module('starter.controllers', [])
         });
     })
 
-    .controller('DoneCtrl', function ($scope) {
-
+    .controller('DoneCtrl', function ($scope, Lifts) {
+        Lifts.finishTodaysWorkout();
     });
