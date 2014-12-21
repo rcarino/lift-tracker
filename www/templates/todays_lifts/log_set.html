@@ -1,18 +1,40 @@
 <ion-view title="Log Your Set" hide-back-button="true">
     <ion-content class="padding">
         <h1>{{ currentLift.type }}</h1>
-        <p>{{ currentLift.weight }}lbs {{ currentLift.reps }}x{{ currentLift.sets }}</p>
-        <p>Plates per side: {{ currentLift.formattedPlatesPerSide }}</p>
 
-        <h2>I did ...</h2>
-        <ion-radio ng-model="choice" ng-value="'1'">1 rep</ion-radio>
-        <ion-radio ng-model="choice" ng-value="'2'">2 reps</ion-radio>
-        <ion-radio ng-model="choice" ng-value="'3'">3 reps</ion-radio>
-        <ion-radio ng-model="choice" ng-value="'4'">4 reps</ion-radio>
-        <ion-radio ng-model="choice" ng-value="'5'">5 reps</ion-radio>
-        <a class="button button-block button-energized" href="#/tab/rest">
-            Finish Set
-        </a>
+        <div ng-if="!currentLift.weight">
+            <style type="text/css">
+                input.ng-invalid.ng-touched {
+                    background-color: #FA787E;
+                }
+
+                input.ng-valid.ng-touched {
+                    background-color: #78FA89;
+                }
+            </style>
+
+            <label class="item item-input">
+                <input type="number" name="work-weight" ng-model="workWeight" placeholder="Enter your work weight"
+                       required>
+            </label>
+
+            <button class="button button-full button-positive" ng-click="update(workWeight)">Submit</button>
+
+        </div>
+
+        <div ng-if="currentLift.weight">
+            <p>{{ currentLift.weight }}lbs {{ currentLift.reps }}x{{ currentLift.sets }}</p>
+
+            <p>Plates per side: {{ currentLift.platesPerSide }}</p>
+
+            <h2>I did ...</h2>
+            <ion-radio ng-model="choice" ng-value="'1'">1 rep</ion-radio>
+            <ion-radio ng-model="choice" ng-value="'2'">2 reps</ion-radio>
+            <ion-radio ng-model="choice" ng-value="'3'">3 reps</ion-radio>
+            <ion-radio ng-model="choice" ng-value="'4'">4 reps</ion-radio>
+            <ion-radio ng-model="choice" ng-value="'5'">5 reps</ion-radio>
+            <a class="button button-block button-energized" ui-sref="tab.rest">Finish Set</a>
+        </div>
 
     </ion-content>
 </ion-view>

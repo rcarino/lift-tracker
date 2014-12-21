@@ -25,67 +25,119 @@ angular.module('starter.services', [])
         }
     })
 
-    .factory('Lifts', function () {
-        var lifts = [
-                {type: 'Squats', reps: 5, sets: 3, weight: 265},
-                {type: 'Bench Presses', reps: 5, sets: 3, weight: 185},
-                {type: 'Deadlifts', reps: 5, sets: 1, weight: 300}
-            ],
-
-            weights = [45, 35, 25, 10, 5, 2.5, 1.25],
-
-            squats = {type: 'Squats', reps: 5, sets: 3},
-            benches = {type: 'Bench Presses', reps: 5, sets: 3},
-            deadlifts = {type: 'Deadlifts', reps: 5, sets: 1},
-            overheadPresses = {type: 'Overhead Presses', reps: 5, sets: 3},
-            cleans = {type: 'Power Cleans', reps: 3, sets: 5};
-
-            //workoutA = ;
-
-        function getPlatesPerSide(weight) {
-            var halfWithoutBar = (weight - 45) / 2,
-                oneSide = [],
-                currentWeight = 0;
-
-            _.forEach(weights, function (weight) {
-                if (currentWeight === halfWithoutBar) {
-                    return;
+    .factory('$localstorage', ['$window', function ($window) {
+        return {
+            set: function (key, value) {
+                $window.localStorage[key] = value;
+            },
+            get: function (key, defaultValue) {
+                return $window.localStorage[key] || defaultValue;
+            },
+            setObject: function (key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function (key, defaultValue) {
+                if (!defaultValue) {
+                    defaultValue = {};
                 }
-
-                while (currentWeight + weight <= halfWithoutBar) {
-                    currentWeight += weight;
-                    oneSide.push(weight);
-                }
-            });
-
-            return oneSide;
+                var value = $window.localStorage[key]
+                return value ? JSON.parse(value) :  defaultValue;
+            }
         }
+    }])
 
-        _.forEach(lifts, function (liftObj) {
-            liftObj.platesPerSide = getPlatesPerSide(liftObj.weight);
-            liftObj.formattedPlatesPerSide = liftObj.platesPerSide.join(', ');
-        });
+    .factory('Lifts', ['$localstorage', function ($localstorage) {
+        var SQUATS = 'Squats',
+            BENCH_PRESSES = 'Bench Presses',
+            DEADLIFTS = 'Deadlifts',
+            OVERHEAD_PRESSES = 'Overhead Presses',
+            POWER_CLEANS = 'Power Cleans';
+
+        function Lift(type, reps, sets) {
+            var weights = [45, 35, 25, 10, 5, 2.5, 1.25];
+
+            function getPlatesPerSide(weight) {
+                var halfWithoutBar = (weight - 45) / 2,
+                    oneSide = [],
+                    currentWeight = 0;
+
+                _.forEach(weights, function (weight) {
+                    if (currentWeight === halfWithoutBar) {
+                        return;
+                    }
+
+                    while (currentWeight + weight <= halfWithoutBar) {
+                        currentWeight += weight;
+                        oneSide.push(weight);
+                    }
+                });
+
+                return oneSide;
+            }
+
+            return {
+                type: type,
+                reps: reps,
+                sets: sets,
+                setWeight: function (weight) {
+                    this.weight = weight;
+                    this.platesPerSide = getPlatesPerSide(weight).join(', ');
+                    $localstorage.setObject(this.type, this);
+                }
+            }
+        };
+
+        var squats = $localstorage.getObject(SQUATS, Lift(SQUATS, 5, 3)),
+            benchPresses = $localstorage.getObject(BENCH_PRESSES, Lift(BENCH_PRESSES, 5, 3)),
+            deadlifts = $localstorage.getObject(DEADLIFTS, Lift(DEADLIFTS, 5, 1)),
+            overheadPresses = $localstorage.getObject(OVERHEAD_PRESSES, Lift(OVERHEAD_PRESSES, 5, 3)),
+            powerCleans = $localstorage.getObject(POWER_CLEANS, Lift('Power Cleans', 3, 5)),
+
+            workoutA = {
+                workout: 'A',
+                lifts: [squats, benchPresses, deadlifts]
+            },
+
+            workoutB = {
+                workout: 'B',
+                lifts: [squats, overheadPresses, powerCleans]
+            },
+
+            lifts = workoutA.lifts,
+
+            currentWorkout = {
+                currentLift: 0,
+                currentSet: 1
+            }
 
         return {
-            getToday: function () {
+            getTodaysWorkout: function () {
                 return lifts;
             },
 
             getCurrentLift: function () {
-                if (lifts.length === 0) {
+                if (currentWorkout.currentLift >= lifts.length) {
                     return null;
                 }
 
-                var currentLift = lifts[0],
-                    currentSet = currentLift.currentSet;
+                var currentLift = lifts[currentWorkout.currentLift];
 
-                currentLift.currentSet = currentSet ? currentSet + 1 : 1
+                console.log('current lift');
+                console.log(currentLift);
+                return currentLift;
+            },
 
-                if (currentLift.currentSet >= currentLift.sets) {
-                    lifts.shift();
+            // Unsafe to call if today's workout has been finished
+            finishCurrentSet: function() {
+                currentWorkout.currentSet += 1;
+                if (currentWorkout.currentSet > this.getCurrentLift().sets) {
+                    currentWorkout.currentLift += 1;
+                    currentWorkout.currentSet = 1;
                 }
 
-                return currentLift;
+                console.log('finish current set');
+                console.log(currentWorkout);
             }
         }
-    });
+    }
+    ]);

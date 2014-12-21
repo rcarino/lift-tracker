@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
     .controller('HomeCtrl', function ($scope, Lifts) {
-        $scope.lifts = Lifts.getToday();
+        $scope.lifts = Lifts.getTodaysWorkout();
     })
 
     .controller('FriendsCtrl', function ($scope, Friends) {
@@ -16,13 +16,23 @@ angular.module('starter.controllers', [])
     })
 
     .controller('LogSetCtrl', function ($scope, Lifts, $state) {
+        var currentWorkout = {
+            currentLift: 0,
+            currentSet: 1
+        };
+
         $scope.currentLift = Lifts.getCurrentLift();
         if (!$scope.currentLift) {
             $state.go('tab.done');
         }
+
+        $scope.update = function (workWeight) {
+            $scope.currentLift.setWeight(workWeight);
+        }
     })
 
-    .controller('RestCtrl', function ($scope, $state) {
+    .controller('RestCtrl', function ($scope, $state, Lifts) {
+        Lifts.finishCurrentSet();
         $scope.$on('timer-stopped', function () {
             $state.go('tab.log_set');
         });

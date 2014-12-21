@@ -3,11 +3,14 @@
     <ul ng-repeat="lift in lifts">
       <li>
         <h1>{{ lift.type }}</h1>
-        <p>{{ lift.weight }}lbs {{ lift.reps }}x{{ lift.sets }}</p>
-        <p>Plates per side: {{ lift.formattedPlatesPerSide }}</p>
+        <p>
+          <span ng-if="lift.weight">{{ lift.weight }}lbs</span>
+          <span>{{ lift.reps }} reps x {{ lift.sets }} sets</span>
+        </p>
+        <p ng-if="lift.platesPerSide">Plates per side: {{ lift.platesPerSide }}</p>
       </li>
     </ul>
-    <a class="button button-block button-energized" href="#/tab/log_set">
+    <a class="button button-block button-energized" ui-sref="tab.log_set">
       Begin lifts
     </a>
 
