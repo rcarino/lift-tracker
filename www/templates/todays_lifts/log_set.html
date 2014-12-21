@@ -1,6 +1,8 @@
 <ion-view title="Log Your Set" hide-back-button="true" cache-view="false">
     <ion-content class="padding">
-        <h1>{{ currentLift.type }}</h1>
+            <h1 layout="row" layout-align="center center">
+                <span>{{ currentLift.type}}</span>
+            </h1>
 
         <div ng-if="!currentLift.weight">
             <style type="text/css">
@@ -12,32 +14,37 @@
                     background-color: #78FA89;
                 }
             </style>
-
             <label class="item item-input">
                 <input type="number" name="work-weight" ng-model="workWeight" placeholder="Enter your work weight"
                        required>
             </label>
-
             <button class="button button-full button-positive" ng-click="update(workWeight)">Submit</button>
-
         </div>
 
         <div ng-if="currentLift.weight">
-            <p>{{ currentLift.weight }}lbs {{ currentLift.reps }}x{{ currentLift.sets }}</p>
+            <md-card>
+                <p>{{ currentLift.weight }}lbs {{ currentLift.reps }}x{{ currentLift.sets }}</p>
+                <p>Plates per side: {{ currentLift.platesPerSide }}</p>
+            </md-card>
 
-            <p>Plates per side: {{ currentLift.platesPerSide }}</p>
-
-            <h2>I did ...</h2>
-
-            <ion-radio ng-model="choice" ng-repeat="i in repRange" ng-value="i">
-                <ng-pluralize count="i"
-                              when="{
+            <md-card>
+                <h2>I did ...</h2>
+                <md-radio-group ng-model="data.group" layout="row" layout-align="center center">
+                    <md-radio-button ng-repeat="i in repRange" ng-value="i">
+                        <ng-pluralize count="i"
+                                      when="{
                                 '1': '1 rep',
                                 'other': '{} reps'
                               }">
-                </ng-pluralize>
-            </ion-radio>
-            <a class="button button-block button-energized" ui-sref="tab.rest">Finish Set</a>
+                    </md-radio-button>
+                </md-radio-group>
+
+                <div layout="row" layout-align="center center">
+                    <md-button class="md-raised md-primary" ui-sref="tab.rest">
+                        Finish Set
+                    </md-button>
+                </div>
+            </md-card>
         </div>
 
     </ion-content>

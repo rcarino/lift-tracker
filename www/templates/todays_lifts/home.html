@@ -1,18 +1,18 @@
 <ion-view title="Today's lifts">
   <ion-content class="padding">
-    <ul ng-repeat="lift in lifts">
-      <li>
-        <h1>{{ lift.type }}</h1>
-        <p>
-          <span ng-if="lift.weight">{{ lift.weight }}lbs</span>
-          <span>{{ lift.reps }} reps x {{ lift.sets }} sets</span>
-        </p>
-        <p ng-if="lift.platesPerSide">Plates per side: {{ lift.platesPerSide }}</p>
-      </li>
-    </ul>
-    <a class="button button-block button-energized" ui-sref="tab.log_set">
-      Begin lifts
-    </a>
+    <md-card ng-repeat="lift in lifts">
+      <h1>{{ lift.type }}</h1>
+      <p>
+        <span ng-if="lift.weight">{{ lift.weight }}lbs</span>
+        <span>{{ lift.reps }} reps x {{ lift.sets }} sets</span>
+      </p>
+    </md-card>
+
+    <div layout="row" layout-align="center center">
+      <md-button class="md-raised md-primary" ui-sref="tab.log_set">
+        Begin Lifts
+      </md-button>
+    </div>
 
   </ion-content>
 </ion-view>
