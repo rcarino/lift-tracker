@@ -8,6 +8,8 @@ angular.module('starter.controllers', [])
         $scope.currentLift = Lifts.getCurrentLift();
         if (!$scope.currentLift) {
             $state.go('tab.done');
+        } else {
+            $scope.repRange = _.range(1, $scope.currentLift.reps + 1);
         }
 
         $scope.update = function (workWeight) {
