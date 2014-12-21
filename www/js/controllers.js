@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
     .controller('HomeCtrl', function ($scope, Lifts) {
         $scope.lifts = Lifts.getTodaysWorkout();
     })
-    
+
     .controller('LogSetCtrl', function ($scope, Lifts, $state) {
         $scope.currentLift = Lifts.getCurrentLift();
         if (!$scope.currentLift) {
