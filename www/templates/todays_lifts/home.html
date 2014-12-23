@@ -1,4 +1,7 @@
-<ion-view title="Today's lifts">
+<ion-view cache-view="false">
+  <ion-nav-title>
+    Today's Lifts
+  </ion-nav-title>
   <ion-content class="padding">
     <md-card ng-repeat="lift in lifts">
       <h1>{{ lift.type }}</h1>
