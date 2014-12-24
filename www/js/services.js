@@ -81,6 +81,8 @@ angular.module('starter.services', [])
 
             currentWorkout.type = (lastWorkout === 'B') ? 'A' : 'B';
             currentWorkout.lifts = (lastWorkout === 'B') ? workoutA : workoutB;
+
+            currentWorkout.log = [[], [], []]
         }
 
         initializeService();
@@ -100,8 +102,10 @@ angular.module('starter.services', [])
             },
 
             // Unsafe to call if today's workout has been finished
-            finishCurrentSet: function () {
+            finishCurrentSet: function (reps) {
                 currentWorkout.currentSet += 1;
+                currentWorkout.log[currentWorkout.currentLift].push(reps);
+                console.log(currentWorkout.log);
                 if (currentWorkout.currentSet > this.getCurrentLift().sets) {
                     currentWorkout.currentLift += 1;
                     currentWorkout.currentSet = 1;

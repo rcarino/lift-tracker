@@ -4,15 +4,6 @@
     </ion-nav-title>
     <ion-content class="padding">
         <div ng-if="!currentLift.weight">
-            <style type="text/css">
-                input.ng-invalid.ng-touched {
-                    background-color: #FA787E;
-                }
-
-                input.ng-valid.ng-touched {
-                    background-color: #78FA89;
-                }
-            </style>
             <label class="item item-input">
                 <input type="number" name="work-weight" ng-model="workWeight" placeholder="Enter your work weight"
                        required>
@@ -27,7 +18,7 @@
             </md-card>
 
             <md-card>
-                <md-radio-group ng-model="data.group" layout="row" layout-align="center center">
+                <md-radio-group ng-model="loggedReps" layout="row" layout-align="center center">
                     <md-radio-button ng-repeat="i in repRange" ng-value="i">
                         <ng-pluralize count="i"
                                       when="{
@@ -38,7 +29,7 @@
                 </md-radio-group>
 
                 <div layout="row" layout-align="center center">
-                    <md-button class="md-raised md-primary" ui-sref="tab.rest">
+                    <md-button class="md-raised md-primary" ng-click="logSet(loggedReps)">
                         Finish Set
                     </md-button>
                 </div>
