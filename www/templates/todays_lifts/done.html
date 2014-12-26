@@ -3,9 +3,21 @@
         Congrats
     </ion-nav-title>
     <ion-content class="padding">
-        <md-card>
-            <h1>YEAH! YOU GO BIG GUY!</h1>
-            <h2>Hoo hah!</h2>
+        <md-card ng-repeat="idx in liftRange">
+            <h2>{{ finishedWorkout.lifts[idx].type }}</h2>
+
+            <p>{{ finishedWorkout.lifts[idx].lastWeight }}lbs.
+                Results: {{ finishedWorkout.log[idx].join(', ') }}</p>
+
+            <p ng-if="finishedWorkout.lifts[idx].isSuccessful">
+                Successful workout. +5 lbs on next attempt
+            </p>
         </md-card>
+
+        <div layout="row" layout-align="center center">
+            <md-button class="md-raised md-primary" ui-sref="tab.todays_lifts">
+                View Next Lifts
+            </md-button>
+        </div>
     </ion-content>
 </ion-view>

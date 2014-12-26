@@ -55,6 +55,7 @@ angular.module('starter.services', [])
                 reps: reps,
                 sets: sets,
                 setWeight: function (weight) {
+                    this.lastWeight = this.weight;
                     this.weight = weight;
                     this.platesPerSide = getPlatesPerSide(weight).join(', ');
                     $localstorage.setObject(this.type, this);
@@ -85,6 +86,12 @@ angular.module('starter.services', [])
             currentWorkout.log = [[], [], []]
         }
 
+        function isSuccessfulLift(liftIdx) {
+            return _.every(currentWorkout.log[liftIdx], function (reps) {
+                return reps === currentWorkout.lifts[liftIdx].reps;
+            });
+        }
+
         initializeService();
 
         return {
@@ -105,22 +112,33 @@ angular.module('starter.services', [])
             finishCurrentSet: function (reps) {
                 currentWorkout.currentSet += 1;
                 currentWorkout.log[currentWorkout.currentLift].push(reps);
-                console.log(currentWorkout.log);
+
                 if (currentWorkout.currentSet > this.getCurrentLift().sets) {
                     currentWorkout.currentLift += 1;
                     currentWorkout.currentSet = 1;
                 }
             },
 
+            // Reinitialized the current workout as the next workout and returns the final results of today's workout
             finishTodaysWorkout: function () {
                 $localstorage.set('lastWorkout', currentWorkout.type);
 
+                // Increment next lifts if all sets are fully completed
                 // JSONified objects don't persist their methods must apply manually
                 var setWeightFn = Lift().setWeight;
-                _.forEach(currentWorkout.lifts, function (lift) {
-                    setWeightFn.call(lift, lift.weight + 5);
+                _.forEach(currentWorkout.lifts, function (lift, liftIdx) {
+                    if (isSuccessfulLift(liftIdx)) {
+                        setWeightFn.call(lift, lift.weight + 5);
+                        lift.isSuccessful = true;
+                    }
                 });
+
+                // Smashing the current workout by reinitializing it for the next workout
+                var finishedWorkout = _.clone(currentWorkout, true);
+
                 initializeService();
+
+                return finishedWorkout;
             }
         }
     }
