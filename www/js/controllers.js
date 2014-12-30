@@ -7,7 +7,7 @@ angular.module('starter.controllers', [])
     .controller('LogSetCtrl', function ($scope, Lifts, $state, $mdToast) {
         $scope.currentLift = Lifts.getCurrentLift();
         if (!$scope.currentLift) {
-            $state.go('tab.done');
+            $state.go('app.done');
         } else {
 
             $scope.repRange = _.range(1, $scope.currentLift.reps + 1);
@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
                     loggedReps = 0;
                 }
                 Lifts.finishCurrentSet(loggedReps);
-                $state.go('tab.rest');
+                $state.go('app.rest');
             };
 
         }
@@ -36,7 +36,7 @@ angular.module('starter.controllers', [])
 
     .controller('RestCtrl', function ($scope, $state, Lifts) {
         $scope.$on('timer-stopped', function () {
-            $state.go('tab.log_set');
+            $state.go('app.log_set');
         });
     })
 
