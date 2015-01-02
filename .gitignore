@@ -7,7 +7,7 @@ plugins/
 .idea/
 *~
 hooks/
-www/lib
+
 *.keystore
 
 .DS_STORE
