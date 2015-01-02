@@ -21,3 +21,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+$light-blue: #4DB3B3;
+
+.bar.bar-stable.bar-header  {
+  background-color: $light-blue !important;
+}
+

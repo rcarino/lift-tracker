@@ -8,17 +8,20 @@
                 <input type="number" name="work-weight" ng-model="workWeight" placeholder="Enter your work weight"
                        required>
             </label>
-            <button class="button button-full button-positive" ng-click="update(workWeight)">Submit</button>
+            <button class="button button-block" ng-click="update(workWeight)">Submit</button>
         </div>
 
         <div ng-if="currentLift.weight">
-            <md-card>
-                <p>{{ currentLift.weight }}lbs {{ currentLift.reps }}x{{ currentLift.sets }}</p>
-                <p>Plates per side: {{ currentLift.platesPerSide }}</p>
-            </md-card>
+            <div class="card">
+                <p class="item item-divider">
+                    {{ currentLift.weight }}lbs {{ currentLift.reps }}x{{ currentLift.sets }}
+                </p>
 
-            <md-card>
-                <md-radio-group ng-model="loggedReps" layout="row" layout-align="center center">
+                <p class="item item-text-wrap">Plates per side: {{ currentLift.platesPerSide }}</p>
+            </div>
+
+            <div class="card">
+                <md-radio-group class="item" ng-model="loggedReps" layout="row" layout-align="center center">
                     <md-radio-button ng-repeat="i in repRange" ng-value="i">
                         <ng-pluralize count="i"
                                       when="{
@@ -27,13 +30,11 @@
                               }">
                     </md-radio-button>
                 </md-radio-group>
+            </div>
 
-                <div layout="row" layout-align="center center">
-                    <md-button class="md-raised md-primary" ng-click="logSet(loggedReps)">
-                        Finish Set
-                    </md-button>
-                </div>
-            </md-card>
+            <button class="button button-block" ng-click="logSet(loggedReps)">
+                Finish Set
+            </button>
         </div>
 
     </ion-content>

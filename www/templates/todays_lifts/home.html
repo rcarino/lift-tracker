@@ -1,21 +1,20 @@
 <ion-view hide-back-button="true" cache-view="false">
-  <ion-nav-title>
-    Today's Lifts
-  </ion-nav-title>
-  <ion-content class="padding">
-    <md-card ng-repeat="lift in lifts">
-      <h1>{{ lift.type }}</h1>
-      <p>
-        <span ng-if="lift.weight">{{ lift.weight }}lbs</span>
-        <span>{{ lift.reps }} reps x {{ lift.sets }} sets</span>
-      </p>
-    </md-card>
+    <ion-nav-title>
+        Today's Lifts
+    </ion-nav-title>
+    <ion-content class="padding">
+        <div class="card" ng-repeat="lift in lifts">
+            <h1 class="item item-divider">{{ lift.type }}</h1>
 
-    <div layout="row" layout-align="center center">
-      <md-button class="md-raised md-primary" ui-sref="app.log_set">
-        Begin Lifts
-      </md-button>
-    </div>
+            <p class="item item-text-wrap">
+                <span ng-if="lift.weight">{{ lift.weight }}lbs</span>
+                <span>{{ lift.reps }} reps x {{ lift.sets }} sets</span>
+            </p>
+        </div>
 
-  </ion-content>
+        <button class="button button-block" ui-sref="app.log_set">
+            Begin Lifts
+        </button>
+
+    </ion-content>
 </ion-view>

@@ -8,3 +8,8 @@ plugins/
 *~
 hooks/
 www/lib
+*.keystore
+
+.DS_STORE
+
+.sass-cache

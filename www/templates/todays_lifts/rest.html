@@ -3,10 +3,10 @@
         Rest Up
     </ion-nav-title>
     <ion-content class="padding">
-        <md-card>
-            <timer countdown="300" max-time-unit="'minute'" interval="1000">{{mminutes}} minute{{minutesS}}, {{sseconds}}
-                second{{secondsS}} until next set
+        <div class="card">
+            <timer class="item" countdown="1" max-time-unit="'minute'" interval="1000">
+                {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}} until next set
             </timer>
-        </md-card>
+        </div>
     </ion-content>
 </ion-view>
